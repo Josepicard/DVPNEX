@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DVPN Chrome Extension</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 200px;
+      padding: 10px;
+      background-color: #f4f4f9;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .status {
+      margin-top: 10px;
+      padding: 5px;
+      background-color: #28a745;
+      color: white;
+      text-align: center;
+    }
+    .status.inactive {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <h3>DVPN</h3>
+  
+  <!-- Connection status -->
+  <div id="status" class="status inactive">Disconnected</div>
+
+  <!-- Buttons for controlling the DVPN -->
+  <button id="connectButton">Connect</button>
+  <button id="disconnectButton" disabled>Disconnect</button>
+
+  <script>
+    // This function updates the connection status in the UI
+    function updateStatus(isConnected) {
+      const statusElement = document.getElementById('status');
+      const connectButton = document.getElementById('connectButton');
+      const disconnectButton = document.getElementById('disconnectButton');
+
+      if (isConnected) {
+        statusElement.textContent = 'Connected';
+        statusElement.classList.remove('inactive');
+        statusElement.classList.add('active');
+        connectButton.disabled = true;
+        disconnectButton.disabled = false;
+      } else {
+        statusElement.textContent = 'Disconnected';
+        statusElement.classList.remove('active');
+        statusElement.classList.add('inactive');
+        connectButton.disabled = false;
+        disconnectButton.disabled = true;
+      }
+    }
+
+    // Connect to the DVPN network
+    document.getElementById('connectButton').addEventListener('click', function() {
+      // Logic for connecting to the peer network
+      chrome.runtime.sendMessage({ action: 'connect' }, (response) => {
+        if (response.status === 'success') {
+          updateStatus(true);
+        }
+      });
+    });
+
+    // Disconnect from the DVPN network
+    document.getElementById('disconnectButton').addEventListener('click', function() {
+      // Logic for disconnecting from the peer network
+      chrome.runtime.sendMessage({ action: 'disconnect' }, (response) => {
+        if (response.status === 'success') {
+          updateStatus(false);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
