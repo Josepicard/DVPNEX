@@ -14,7 +14,6 @@ The **DVPN Chrome Extension** is a decentralized VPN built using **libp2p** to e
 ```
 DVPN-Chrome-Extension/
 │── background.js      # Handles networking, proxy settings, and reputation system
-│── content.js         # Injected into webpages (optional)
 │── popup.html         # Frontend UI
 │── popup.js           # Handles UI interactions
 │── manifest.json      # Chrome extension manifest
